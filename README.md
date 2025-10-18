@@ -1,1 +1,1 @@
-# dotfiles
+Easy setup via nix-darwin + aerospace + nvim + .zshrc

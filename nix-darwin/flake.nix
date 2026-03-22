@@ -17,26 +17,21 @@
           env = pkgs.buildEnv {
             name = "system-applications";
             paths = config.environment.systemPackages;
-            pathsToLink = "/Applications";
+            pathsToLink = [ "/Applications" ];
           };
         in {
 
           nixpkgs.config.allowUnfree = true;
 
           environment.systemPackages = with pkgs; [
-            spicetify-cli
             nodejs_24
-            colima
-            docker
-            neovim
+            lazydocker
+            lazygit
+            rustup
             pnpm
             btop
             eza
           ];
-
-          environment.variables = {
-            DOCKER_HOST = "/Users/x44annie/.colima/docker/docker.sock";
-          };
 
           system.activationScripts.applications.text = pkgs.lib.mkForce ''
             echo "setting up /Applications..." >&2
@@ -48,16 +43,6 @@
               echo "copying $src" >&2
               ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
             done
-          '';
-
-          programs.zsh.enable = true; 
-
-          programs.zsh.shellInit = ''
-            export PNPM_HOME="/Users/x44annie/Library/pnpm"
-            case ":$PATH:" in 
-              *":$PNPM_HOME:"*) ;; 
-              *) export PATH="$PNPM_HOME:$PATH" ;;
-            ecas
           '';
 
           nix.settings.experimental-features = "nix-command flakes";
@@ -73,4 +58,3 @@
       };
     };
 }
-
